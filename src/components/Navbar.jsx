@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import { Car, Phone, X, ArrowRight, MessageCircle } from "lucide-react";
 import { FaInstagramSquare, FaTwitterSquare } from "react-icons/fa";
+import logo from "/logo.png";
 
 const G = "#ffc107";
 const D = "#080808";
@@ -9,7 +10,7 @@ const W = "#ffffff";
 
 const NAV_ITEMS = [
   { label: "Home",     path: "/" },
-    { label: "About",    path: "/about" },
+  { label: "About",    path: "/about" },
   { label: "Services", path: "/service" },
   { label: "Fleet",    path: "/fleet" },
   { label: "Contact",  path: "/contact" },
@@ -66,46 +67,21 @@ const CSS = `
   height:78px;display:flex;align-items:center;
 }
 
-/* logo */
+/* ── LOGO IMAGE ── */
 .nb-logo{
-  display:flex;align-items:center;gap:13px;
+  display:flex;align-items:center;
   text-decoration:none;flex-shrink:0;margin-right:32px;
   animation:logoIn .75s cubic-bezier(.22,1,.36,1) both;
 }
-.nb-logo-emblem{position:relative;width:48px;height:48px;flex-shrink:0}
-.nb-emblem-ring{
-  position:absolute;inset:0;border-radius:50%;
-  background:conic-gradient(from 0deg,#8B6914 0%,${G} 25%,#fff8dc 50%,${G} 75%,#8B6914 100%);
-  animation:rotateSlow 8s linear infinite;
+.nb-logo-img{
+  height:238px;
+  width:auto;
+  object-fit:contain;
+  display:block;
+  transition:opacity .3s;
+  padding:23px
 }
-.nb-emblem-face{
-  position:absolute;inset:2.5px;border-radius:50%;
-  background:linear-gradient(145deg,#1c1400,#060400);
-  display:flex;align-items:center;justify-content:center;
-}
-.nb-logo-glow{position:absolute;inset:-4px;border-radius:50%;animation:pulseGold 3.2s infinite;pointer-events:none}
-.nb-logo-text{display:flex;flex-direction:column;line-height:1}
-.nb-wordmark{
-  font-family:'Cormorant Garamond',serif;
-  font-size:1.5rem;font-weight:700;line-height:1;letter-spacing:.03em;
-  display:flex;align-items:baseline;
-}
-.nb-wordmark-white{color:${W}}
-.nb-wordmark-gold{
-  background:linear-gradient(90deg,#b8860b,${G},#fff8dc,${G},#b8860b);
-  background-size:300% auto;
-  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
-  animation:shimmer 5s linear infinite;
-}
-.nb-tagline{
-  font-family:'Poppins',sans-serif;font-size:.46rem;
-  letter-spacing:.38em;text-transform:uppercase;font-weight:700;
-  color:rgba(255,193,7,.4);margin-top:3px;
-  display:flex;align-items:center;gap:5px;
-}
-.nb-tagline::before,.nb-tagline::after{
-  content:'';display:inline-block;width:12px;height:1px;background:rgba(255,193,7,.25);
-}
+.nb-logo:hover .nb-logo-img{opacity:.85}
 
 /* nav links */
 .nb-links{display:flex;align-items:center;flex:1;justify-content:center}
@@ -175,7 +151,7 @@ const CSS = `
 .nb-cta:hover::before{transform:translateX(110%)}
 .nb-cta-dot{width:6px;height:6px;border-radius:50%;background:${D};animation:pulseGold 2s infinite}
 
-/* hamburger — always the last item / far right */
+/* hamburger */
 .nb-burger{
   display:none;flex-direction:column;justify-content:center;align-items:center;
   gap:5px;width:44px;height:44px;border-radius:4px;
@@ -201,12 +177,12 @@ const CSS = `
   padding:22px 6%;border-bottom:1px solid rgba(255,193,7,.07);flex-shrink:0;
 }
 .nb-dw-logo{display:flex;align-items:center;gap:11px}
-.nb-dw-logo-icon{
-  width:40px;height:40px;border-radius:50%;
-  background:linear-gradient(135deg,${G},#e6ac00);
-  display:flex;align-items:center;justify-content:center;
+.nb-dw-logo-img{
+  height:38px;
+  width:auto;
+  object-fit:contain;
+  display:block;
 }
-.nb-dw-logo-name{font-family:'Cormorant Garamond',serif;font-size:1.3rem;font-weight:700;color:${W}}
 .nb-dw-close{
   width:38px;height:38px;border-radius:50%;
   border:1px solid rgba(255,193,7,.18);background:rgba(255,193,7,.04);
@@ -363,9 +339,10 @@ const CSS = `
 }
 .nb-trust-icon{color:${G};font-size:10px}
 
-/* responsive */
+/* ── RESPONSIVE ── */
 @media(max-width:1120px){
   .nb-logo{margin-right:18px}
+  .nb-logo-img{height:42px}
   .nb-link{padding:11px 11px;font-size:.65rem}
   .nb-phone-lines{display:none}
   .nb-phone-pill{padding:8px;border-radius:50%}
@@ -379,8 +356,7 @@ const CSS = `
 }
 @media(max-width:600px){
   .nb-inner      {height:66px;padding:0 4%}
-  .nb-tagline    {display:none}
-  .nb-wordmark   {font-size:1.28rem}
+  .nb-logo-img   {height:34px}
   .nb-field-row  {grid-template-columns:1fr}
   .nb-modal-body    {padding:16px 16px 20px}
   .nb-modal-header  {padding:18px 16px 14px}
@@ -400,7 +376,6 @@ export default function Navbar() {
     vehicle: "", name: "", phone: "", note: "",
   });
 
-  // scroll listener
   useEffect(() => {
     const onScroll = () => {
       const y   = window.scrollY;
@@ -412,16 +387,13 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // close drawer on route change
   useEffect(() => { setDrawerOpen(false); }, [location.pathname]);
 
-  // lock body scroll
   useEffect(() => {
     document.body.style.overflow = (drawerOpen || modalOpen) ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [drawerOpen, modalOpen]);
 
-  // Escape key
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") {
@@ -449,7 +421,6 @@ export default function Navbar() {
     }, 1800);
   };
 
-  // active check using React Router location
   const isActive = (path) =>
     path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
 
@@ -464,20 +435,16 @@ export default function Navbar() {
       <nav className={`nb-root ${scrolled ? "scrolled" : ""}`}>
         <div className="nb-inner">
 
-          {/* Logo → navigates to "/" */}
+          {/* ── Logo Image ── */}
           <Link className="nb-logo" to="/">
-            <div className="nb-logo-emblem">
-            </div>
-            <div className="nb-logo-text">
-              <div className="nb-wordmark">
-                <span className="nb-wordmark-white">Car</span>
-                <span className="nb-wordmark-gold">Cab</span>
-              </div>
-              <div className="nb-tagline">Premium · Service</div>
-            </div>
+            <img
+              src={logo}
+              alt="CarCab Logo"
+              className="nb-logo-img"
+            />
           </Link>
 
-          {/* Nav Links — React Router <Link>, zero dropdowns */}
+          {/* Nav Links */}
           <div className="nb-links">
             {NAV_ITEMS.map((item) => (
               <div key={item.label} className="nb-item">
@@ -491,7 +458,7 @@ export default function Navbar() {
             ))}
           </div>
 
-          {/* Right — phone · divider · book · hamburger (far-right) */}
+          {/* Right — phone · divider · book · hamburger */}
           <div className="nb-right">
             <a className="nb-phone-pill" href="tel:+919XXXXXXXXX">
               <div className="nb-phone-orb">
@@ -508,7 +475,6 @@ export default function Navbar() {
               Book a Ride
             </button>
 
-            {/* Hamburger — always the last element = far right */}
             <button
               className={`nb-burger ${drawerOpen ? "open" : ""}`}
               onClick={() => setDrawerOpen((v) => !v)}
@@ -527,10 +493,11 @@ export default function Navbar() {
       <div className={`nb-drawer ${drawerOpen ? "open" : ""}`}>
         <div className="nb-dw-head">
           <div className="nb-dw-logo">
-            <div className="nb-dw-logo-icon">
-              <Car size={18} color={D} strokeWidth={2.5} />
-            </div>
-            <span className="nb-dw-logo-name">CarCab</span>
+            <img
+              src={logo}
+              alt="CarCab Logo"
+              className="nb-dw-logo-img"
+            />
           </div>
           <button className="nb-dw-close" onClick={() => setDrawerOpen(false)}>
             <X size={16} />
@@ -575,7 +542,7 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* ── Booking Modal (compact) ── */}
+      {/* ── Booking Modal ── */}
       {modalOpen && (
         <div
           className="nb-modal-overlay"
@@ -595,7 +562,6 @@ export default function Navbar() {
 
             <div className="nb-modal-body">
 
-              {/* Service type chips */}
               <div className="nb-field">
                 <label className="nb-label">Service Type</label>
                 <div className="nb-chips">
@@ -611,7 +577,6 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* Pickup & Drop */}
               <div className="nb-field-row">
                 <div className="nb-field">
                   <label className="nb-label">Pickup</label>
@@ -627,7 +592,6 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* Date & Time */}
               <div className="nb-field-row">
                 <div className="nb-field">
                   <label className="nb-label">Date</label>
@@ -643,7 +607,6 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* Vehicle */}
               <div className="nb-field">
                 <label className="nb-label">Vehicle</label>
                 <select className="nb-select"
@@ -654,7 +617,6 @@ export default function Navbar() {
                 </select>
               </div>
 
-              {/* Name & Phone */}
               <div className="nb-field-row">
                 <div className="nb-field">
                   <label className="nb-label">Name</label>
@@ -670,7 +632,6 @@ export default function Navbar() {
                 </div>
               </div>
 
-              {/* Note */}
               <div className="nb-field">
                 <label className="nb-label">
                   Note{" "}

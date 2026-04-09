@@ -595,7 +595,7 @@ function HeroBanner() {
     <div className="hero-banner">
       <img
         className="hero-img"
-        src="https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?w=1800&q=90"
+        src="https://images.pexels.com/photos/11187484/pexels-photo-11187484.jpeg"
         alt="Contact CarCab"
       />
       <div className="hero-overlay" />

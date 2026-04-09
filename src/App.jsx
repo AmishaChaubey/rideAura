@@ -6,6 +6,8 @@ import Navbar from './components/Navbar'
 import About from './pages/about/About'
 import ContactPage from './pages/contact/Contact'
 import Service from './pages/services/Service'
+import FleetPage from './pages/fleet/Fleet'
+import Footer from './components/Footer'
 
 
 
@@ -23,7 +25,10 @@ const App = () => {
         <Route path='/contact' element={<ContactPage/>}/>
         {/* <Route path='/package' element={<Package/>}/> */}
         <Route path='/service' element={<Service/>}/>
+        <Route path='/fleet' element={<FleetPage/>}/>
       </Routes>
+
+      <Footer/>
     </Router>
       
     </div>

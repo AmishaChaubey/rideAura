@@ -205,7 +205,7 @@ const CSS = `
   /* ═══════════════════════════════════════
      PACKAGES
   ═══════════════════════════════════════ */
-  .pkg-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:0;max-width:980px;margin:0 auto;align-items:stretch; }
+  .pkg-grid { display:grid;grid-template-columns:repeat(3,1fr);gap:0;max-width:1280px;margin:0 auto;align-items:stretch; }
   .pkg-card { overflow:hidden;transition:all .4s cubic-bezier(.4,0,.2,1);position:relative; }
   .pkg-card:hover { transform:translateY(-8px);box-shadow:0 24px 60px rgba(0,0,0,.22); }
 
@@ -234,12 +234,11 @@ const CSS = `
   .tour-img { width:100%;height:100%;object-fit:cover;display:block;transition:transform .75s cubic-bezier(.4,0,.2,1),filter .6s ease;will-change:transform; }
   .tour-card:hover .tour-img { transform:scale(1.1);filter:brightness(.7) saturate(1.15); }
 
-  .tour-overlay { position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.04) 0%,rgba(0,0,0,.18) 35%,rgba(0,0,0,.62) 65%,rgba(0,0,0,.92) 100%);transition:background .5s ease; }
-  .tour-card:hover .tour-overlay { background:linear-gradient(180deg,rgba(0,0,0,.1) 0%,rgba(0,0,0,.3) 35%,rgba(0,0,0,.75) 65%,rgba(0,0,0,.97) 100%); }
+  .tour-overlay { position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,.04) 0%,rgba(0,0,0,.18) 35%,rgba(0,0,0,.62) 85%,rgba(0,0,0,.92) 90%);transition:background .5s ease; }
+  .tour-card:hover .tour-overlay { background:linear-gradient(180deg,rgba(0,0,0,.1) 0%,rgba(0,0,0,.3) 75%,rgba(0,0,0,.75) 95%,rgba(0,0,0,.97) 100%); }
 
   /* gold sweep */
   .tour-accent { position:absolute;bottom:0;left:0;height:2.5px;width:0;background:linear-gradient(90deg,${G},rgba(255,193,7,.25));transition:width .55s cubic-bezier(.4,0,.2,1);z-index:5; }
-  .tour-card:hover .tour-accent { width:100%; }
 
   /* badge */
   .tour-badge { position:absolute;top:13px;left:13px;background:rgba(10,10,10,.55);border:1px solid rgba(255,193,7,.4);backdrop-filter:blur(12px);color:${G};font-family:'Poppins',sans-serif;font-size:.56rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;padding:5px 10px;border-radius:100px;animation:badge-pop .4s cubic-bezier(.34,1.56,.64,1) .3s both;transition:background .3s,border-color .3s;z-index:4; }
@@ -249,12 +248,7 @@ const CSS = `
   .tour-arrow { position:absolute;top:13px;right:13px;width:34px;height:34px;border-radius:50%;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.08);backdrop-filter:blur(8px);display:flex;align-items:center;justify-content:center;opacity:0;transform:translate(6px,-6px) rotate(-45deg);transition:opacity .35s ease,transform .4s cubic-bezier(.34,1.56,.64,1),background .3s,border-color .3s;color:${W};z-index:4; }
   .tour-card:hover .tour-arrow { opacity:1;transform:translate(0,0) rotate(0deg); }
 
-  /* particles */
-  .tour-particle { position:absolute;width:4px;height:4px;border-radius:50%;background:${G};opacity:0;pointer-events:none;transition:opacity .3s;z-index:3; }
-  .tour-card:hover .tour-particle { opacity:1; }
-  .tp1 { top:30%;left:15%;animation:floating-particles 3s ease-in-out infinite; }
-  .tp2 { top:22%;right:20%;animation:floating-particles 3.5s ease-in-out .5s infinite; }
-  .tp3 { bottom:38%;left:24%;animation:floating-particles 2.8s ease-in-out 1s infinite; }
+ 
 
   /* content */
   .tour-content { position:absolute;inset:0;display:flex;flex-direction:column;justify-content:flex-end;padding:18px;pointer-events:none;z-index:4; }
@@ -483,7 +477,7 @@ function Hero() {
 
       <div style={{ position:"relative", zIndex:2, height:"100%", display:"flex", alignItems:"center", padding:"0 5%", paddingTop:80 }}>
         <div style={{ maxWidth:700, width:"100%" }}>
-          <div className="label-tag" style={{ opacity:v?1:0, transition:"opacity .7s .1s" }}>Premium Chauffeur Service</div>
+          <div className="label-tag mt-20" style={{ opacity:v?1:0, transition:"opacity .7s .1s" }}>Premium Chauffeur Service</div>
           <h1 className="garamond hero-title"
             style={{ fontSize:"clamp(2.8rem,6vw,6rem)", fontWeight:700, lineHeight:1.02, marginTop:16, color:W,
               opacity:v?1:0, transform:v?"none":"translateY(40px)", transition:"all 1s .3s cubic-bezier(.22,1,.36,1)" }}>
@@ -511,26 +505,7 @@ function Hero() {
         </div>
       </div>
 
-      {/* Booking bar */}
-      <div className="hero-bottom-bar" style={{ position:"absolute", bottom:0, left:0, right:0, zIndex:5, background:"rgba(10,10,10,.92)", backdropFilter:"blur(24px)", borderTop:"1px solid rgba(255,193,7,.1)", padding:"18px 5%" }}>
-        <div style={{ maxWidth:1280, margin:"0 auto" }}>
-          <div className="hero-booking" style={{ display:"flex", gap:16, alignItems:"flex-end", flexWrap:"wrap" }}>
-            {[{l:"Pickup Location",ph:"Enter pickup address",t:"text"},{l:"Destination",ph:"Where are you headed?",t:"text"},{l:"Date",ph:"",t:"date"}].map((f,i) => (
-              <div key={i} className="hero-booking-field" style={{ flex:1, minWidth:150 }}>
-                <div style={{ color:G, fontSize:".58rem", letterSpacing:".2em", textTransform:"uppercase", fontFamily:"'Poppins',sans-serif", fontWeight:600, marginBottom:5 }}>{f.l}</div>
-                <input className="ride-input" type={f.t} placeholder={f.ph}/>
-              </div>
-            ))}
-            <div className="hero-booking-field" style={{ flex:1, minWidth:130 }}>
-              <div style={{ color:G, fontSize:".58rem", letterSpacing:".2em", textTransform:"uppercase", fontFamily:"'Poppins',sans-serif", fontWeight:600, marginBottom:5 }}>Car Class</div>
-              <select className="ride-input"><option>Economy</option><option>Premium</option><option>Elite</option></select>
-            </div>
-            <button className="btn" style={{"--color":G,"--color2":D, flexShrink:0, display:"flex", alignItems:"center", gap:7}}>
-              Search <ArrowRight size={13}/>
-            </button>
-          </div>
-        </div>
-      </div>
+  
     </section>
   );
 }
@@ -800,7 +775,7 @@ function Packages() {
                   className="btn btn-sm"
                   style={{
                     "--color": pkg.dark ? G : D,
-                    "--color2": D,
+                    "--color2": W,
                     width:"100%", marginTop:20, justifyContent:"center"
                   }}
                 >
